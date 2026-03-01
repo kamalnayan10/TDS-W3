@@ -1,0 +1,30 @@
+name: DataDash Playwright Scraper
+
+on:
+  workflow_dispatch: # Allows you to trigger the run manually from the Actions tab
+  push:
+    branches:
+      - main
+
+jobs:
+  scrape-and-sum:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          playwright install chromium
+
+      # This step strictly satisfies the email requirement in the prompt
+      - name: Run scraper for 23f1002610@ds.study.iitm.ac.in
+        run: python scraper.py
